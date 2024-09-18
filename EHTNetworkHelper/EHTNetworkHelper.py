@@ -6,8 +6,10 @@ class EHTNetworkHelper:
 
     def __init__(self,
                  ns3_path=r"/home/william/ns-3/ns-allinone-3.41/ns-3.41",
+                 script_name="wifi-eht-network",
                  ):
         self.ns3_path = ns3_path
+        self.script_name = script_name
 
         self.frequency = 5  # FREQ DO PRIMEIRO LINK (2.4; 5; 6) [padrão = 5]
         self.frequency2 = 0  # FREQ DO SEGUNDO LINK (0 INDICA Q ESTA DESLIGADO) [0]
@@ -75,7 +77,7 @@ class EHTNetworkHelper:
             list_of_params.append(frequency3_text)
         
         # MONTA O COMANDO DA SIMULACAO COM OS ARGUMENTOS
-        simulation_args = f"'wifi-eht-network "
+        simulation_args = f"'{self.script_name} "
         for param in list_of_params:
             simulation_args += param
         simulation_args += "'"
@@ -83,23 +85,31 @@ class EHTNetworkHelper:
         return simulation_args
 
     def run(self, output_file_name="teste"):
-        exe_ns3 = "/home/william/ns-3/ns-allinone-3.40/ns-3.40/ns3"
+        # exe_ns3 = "/home/william/ns-3/ns-allinone-3.40/ns-3.40/ns3"
+        exe_ns3 = self.ns3_path+"/ns3"
+
+        command = "run"
+        simulation_args = self.build_simulation_args()
+
+        # RUN MODE
+        result = subprocess.run([exe_ns3, command, simulation_args], capture_output=True)
+
+        self.save_output(result, output_file_name)
+
+        return result
+
+    def generate_run_command(self,output_file_name="teste"):
+        exe_ns3 = self.ns3_path+"/ns3"
         command = "run"
         simulation_args = self.build_simulation_args()
 
         print(exe_ns3, command, simulation_args)
         return 0
-        # RUN MODE
-        # result = subprocess.run([exe_ns3, command, simulation_args], capture_output=True)
-        #
-        # self.save_output(result, output_file_name)
-        #
-        # return result
 
     def test_run(self):
-        print("comando:", runner.build_simulation_args())
+        print("comando:", self.build_simulation_args())
         print("RODANDO...")
-        resultado = runner.run()
+        resultado = self.run()
         print("RESULTADO \n", resultado.stdout.decode("utf-8"))
 
     def save_output(self, resultado, output_file_name):
