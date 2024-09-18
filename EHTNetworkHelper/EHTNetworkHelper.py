@@ -7,6 +7,7 @@ class EHTNetworkHelper:
     def __init__(self,
                  ns3_path=r"/home/william/ns-3/ns-allinone-3.41/ns-3.41",
                  script_name="wifi-eht-network",
+                 enable_op_params=False
                  ):
         self.ns3_path = ns3_path
         self.script_name = script_name
@@ -30,6 +31,13 @@ class EHTNetworkHelper:
         # tputInterval =              # duration of intervals for throughput measurement [+0fs]
         self.minExpectedThroughput = 0  # if set, simulation fails if the lowest throughput is below this value [0]
         self.maxExpectedThroughput = 0  # if set, simulation fails if the highest throughput is above this value [0]
+
+        # CUSTOM PARAMS
+        self.enable_op_params = enable_op_params
+        self.cw = 80
+        self.gi = 800
+        self.emlsr = 0
+
 
     def build_simulation_args(self):
         # argumentos da simulacao
@@ -75,7 +83,16 @@ class EHTNetworkHelper:
             list_of_params.append(frequency2_text)
         if self.frequency3 is not None:
             list_of_params.append(frequency3_text)
-        
+
+        if self.enable_op_params:
+            cw_text = f" --cw={self.cw}"
+            gi_text = f" --gi={self.gi}"
+            emlsr_text = f" --emlsr={self.emlsr}"
+
+            list_of_params.append(cw_text)
+            list_of_params.append(gi_text)
+            list_of_params.append(emlsr_text)
+
         # MONTA O COMANDO DA SIMULACAO COM OS ARGUMENTOS
         simulation_args = f"'{self.script_name} "
         for param in list_of_params:
@@ -103,8 +120,8 @@ class EHTNetworkHelper:
         command = "run"
         simulation_args = self.build_simulation_args()
 
-        print(exe_ns3, command, simulation_args)
-        return 0
+        out = exe_ns3 +' '+ command +' '+ simulation_args
+        return out
 
     def test_run(self):
         print("comando:", self.build_simulation_args())
