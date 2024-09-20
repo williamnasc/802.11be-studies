@@ -120,7 +120,7 @@ class EHTNetworkHelper:
         command = "run"
         simulation_args = self.build_simulation_args()
 
-        out = exe_ns3 +' '+ command +' '+ simulation_args
+        out = exe_ns3 +' '+ command +' '+ simulation_args +' > '+ output_file_name+'.txt'
         return out
 
     def test_run(self):
