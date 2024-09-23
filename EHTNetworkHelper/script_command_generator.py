@@ -91,3 +91,11 @@ helper.frequency3 = 2.4
 helper.nStations = 10
 
 teste_nStations(helper, 'be_5GHz_6GHz_24GHz')
+
+helper.frequency = 5
+helper.frequency2 = 6
+helper.frequency3 = 2.4
+helper.nStations = 10
+helper.emlsr = 1
+
+teste_nStations(helper, 'emlsr_5GHz_6GHz_24GHz')
