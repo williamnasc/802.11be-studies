@@ -1,12 +1,17 @@
 import time
-import subprocess 
+import subprocess
+import os
+
+# CAMINHO NO CLUSTE DO LANCE
+# r"/home/lance/william/ns3/ns-allinone-3.43/ns-3.43"
+# CAMINHO LOCAL
+# r"/home/william/ns-3/ns-allinone-3.43/ns-3.43"
 
 class EHTNetworkHelper:
     """Classe que facilitar a execução do eht-network do ns3"""
-
     def __init__(self,
                  ns3_path=r"/home/william/ns-3/ns-allinone-3.43/ns-3.43",
-                 script_name="william-eht-network",
+                 script_name="wifi-eht-network",
                  enable_op_params=False
                  ):
         self.ns3_path = ns3_path
@@ -184,10 +189,29 @@ class EHTNetworkHelper:
 
         pass
 
+    def generate_sh_script(self, time=(0,1,0), mem=3600, output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim.sh"):
+        file_text = ""
+        file_text += f"#!/bin/bash\n"
+        file_text += f"#SBATCH --time={time[0]}-{time[1]}:{time[2]}    # Especifica o tempo máximo de execução do job, dado no padrão dias-horas:minutos\n"
+        file_text += f"#SBATCH --mem={mem}\n"
+        file_text += f"#SBATCH --output=william_job_%A_%a.out\n\n"
+        file_text += f"mkdir -p {self.ns3_path}{output_sim_path}\n\n"
+        file_text += f"echo \"CRIOU A PASTA\"\n\n"
+        file_text += f"cd '/home/lance/william/ns3/ns-allinone-3.43/ns-3.43\'\n\n"
+        file_text += f"srun -N 1 -n 1 ./ns3 run \'{self.script_name}\' --cwd=\'{self.ns3_path}{output_sim_path}\' > {self.ns3_path}{output_sim_path}.out 2>&1\"\n\n"
+
+        # Criando e escrevendo no arquivo .sh
+        with open(sh_name, "w") as arquivo:
+            arquivo.write(file_text)
+        # Tornando o arquivo executável
+        os.chmod(sh_name, 0o755)
+        print(f"{sh_name} criado")
+
 if __name__=='__main__':
     print('olá mundo!')
     helper = EHTNetworkHelper()
     helper.frequency = 5
     helper.frequency2 = 2.4
     helper.frequency3 = 6
-    helper.run()
+    # helper.run()
+    helper.generate_sh_script()
