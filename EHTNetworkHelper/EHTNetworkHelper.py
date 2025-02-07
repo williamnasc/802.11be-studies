@@ -189,23 +189,45 @@ class EHTNetworkHelper:
 
         pass
 
-    def generate_sh_script(self, time=(0,1,0), mem=3600, output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim.sh"):
+    def generate_sh_script(self, time=(0,1,0), mem=3600, output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim", folder=""):
+        if folder != "":
+            folder = folder+"/"
+        simulation_args = self.build_simulation_args()
+
         file_text = ""
         file_text += f"#!/bin/bash\n"
         file_text += f"#SBATCH --time={time[0]}-{time[1]}:{time[2]}    # Especifica o tempo máximo de execução do job, dado no padrão dias-horas:minutos\n"
         file_text += f"#SBATCH --mem={mem}\n"
-        file_text += f"#SBATCH --output=william_job_%A_%a.out\n\n"
+        file_text += f"#SBATCH --output=william_job_{sh_name}_%A_%a.out\n\n"
         file_text += f"mkdir -p {self.ns3_path}{output_sim_path}\n\n"
         file_text += f"echo \"CRIOU A PASTA\"\n\n"
         file_text += f"cd '/home/lance/william/ns3/ns-allinone-3.43/ns-3.43\'\n\n"
-        file_text += f"srun -N 1 -n 1 ./ns3 run \'{self.script_name}\' --cwd=\'{self.ns3_path}{output_sim_path}\' > {self.ns3_path}{output_sim_path}.out 2>&1\"\n\n"
+        file_text += f"srun -N 1 -n 1 ./ns3 run {simulation_args} --cwd=\'{self.ns3_path}{output_sim_path}\' > {self.ns3_path}{output_sim_path}.out 2>&1\n\n"
 
+        file_sh_name = folder+sh_name+".sh"
         # Criando e escrevendo no arquivo .sh
-        with open(sh_name, "w") as arquivo:
+        with open(file_sh_name, "w") as arquivo:
             arquivo.write(file_text)
         # Tornando o arquivo executável
-        os.chmod(sh_name, 0o755)
-        print(f"{sh_name} criado")
+        os.chmod(file_sh_name, 0o755)
+        print(f"{file_sh_name} criado")
+        return file_sh_name
+
+    def runner_sh_scripts(self, sh_names=[], file_name='teste'):
+        file_text = ""
+        for file_sh_name in sh_names:
+            file_text += f"chmod +x {file_sh_name} & wait\n"
+            file_text += f"./{file_sh_name} & wait\n"
+
+        file_sh_name = file_name + ".sh"
+        # Criando e escrevendo no arquivo .sh
+        with open(file_sh_name, "w") as arquivo:
+            arquivo.write(file_text)
+        # Tornando o arquivo executável
+        os.chmod(file_sh_name, 0o755)
+        print(f"{file_sh_name} criado")
+        return file_sh_name
+
 
 if __name__=='__main__':
     print('olá mundo!')
@@ -214,4 +236,4 @@ if __name__=='__main__':
     helper.frequency2 = 2.4
     helper.frequency3 = 6
     # helper.run()
-    helper.generate_sh_script()
+    helper.generate_sh_script(output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim")

@@ -24,27 +24,27 @@ def teste_nStations(eht_helper, output_name='teste'):
 
 helper_ax = EHTNetworkHelper(
     ns3_path=r".",
-    script_name="william-he"
+    script_name="wifi-he-network"
 )
 
 helper_ax.frequency = 5
 helper_ax.nStations = 10
 helper_ax.mcs=11
-helper_ax.simulationTime=2
+helper_ax.simulationTime=10
 
 teste_nStations(helper_ax, 'ax_5GHz')
 
 helper_ax.frequency = 6
 helper_ax.nStations = 10
 helper_ax.mcs=11
-helper_ax.simulationTime=2
+helper_ax.simulationTime=10
 
 teste_nStations(helper_ax, 'ax_6GHz')
 
 helper_ax.frequency = 2.4
 helper_ax.nStations = 10
 helper_ax.mcs=11
-helper_ax.simulationTime=2
+helper_ax.simulationTime=10
 
 teste_nStations(helper_ax, 'ax_24GHz')
 
@@ -52,27 +52,27 @@ print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 helper = EHTNetworkHelper(
     ns3_path=r".",
-    script_name="william-eht-network",
+    script_name="wifi-eht-network",
 )
 
 helper.frequency = 5
 helper.nStations = 10
 helper.mcs=11
-helper.simulationTime=2
+helper.simulationTime=10
 
 teste_nStations(helper, 'be_5GHz')
 
 helper.frequency = 6
 helper.nStations = 10
 helper.mcs=11
-helper.simulationTime=2
+helper.simulationTime=10
 
 teste_nStations(helper, 'be_6GHz')
 
 helper.frequency = 2.4
 helper.nStations = 10
 helper.mcs=11
-helper.simulationTime=2
+helper.simulationTime=10
 
 teste_nStations(helper, 'be_24GHz')
 
@@ -81,7 +81,7 @@ helper.frequency = 5
 helper.frequency2 = 6
 helper.nStations = 10
 helper.mcs=11
-helper.simulationTime=2
+helper.simulationTime=10
 
 teste_nStations(helper, 'be_5GHz_6GHz')
 
@@ -100,6 +100,6 @@ helper.frequency3 = 2.4
 helper.nStations = 10
 helper.emlsrLinks = '0,1,2'
 helper.mcs=11
-helper.simulationTime=2
+helper.simulationTime=10
 
 teste_nStations(helper, 'emlsr_5GHz_6GHz_24GHz')

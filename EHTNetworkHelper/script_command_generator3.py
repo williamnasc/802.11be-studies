@@ -1,3 +1,5 @@
+import os
+
 from EHTNetworkHelper import EHTNetworkHelper
 
 def teste_nStations(eht_helper, output_name='teste'):
@@ -27,9 +29,32 @@ helper = EHTNetworkHelper(
     script_name="wifi-eht-network",
 )
 
-helper.frequency = 5
-helper.nStations = 10
+helper.nStations = 1
 helper.mcs=11
-helper.simulationTime=10
+helper.simulationTime=1
 
-teste_nStations(helper, 'be_5GHz')
+
+params_matrix = [
+    (2.4, 0, 0),
+    (2.4, 5, 0),
+    (2.4, 6, 0),
+    (2.4, 5, 6),
+]
+sh_names = []
+pasta = "teste_24"
+os.mkdir(pasta)
+for i, params in enumerate(params_matrix):
+    freq, freq2, freq3 = params
+    helper.frequency = freq
+    helper.frequency2 = freq2
+    helper.frequency3 = freq3
+    print(f"creating for: {freq}_{freq2}_{freq3}")
+    sh_name = helper.generate_sh_script(
+        output_sim_path=r"/results_teste/Sim_"+str(i+10),
+        sh_name=f"ns3_sim_{str(i+10)}_{int(freq)}_{int(freq2)}_{int(freq3)}",
+        folder=pasta)
+    sh_names.append(sh_name)
+
+helper.runner_sh_scripts(sh_names=sh_names, file_name=pasta)
+
+
