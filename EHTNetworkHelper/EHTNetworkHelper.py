@@ -10,7 +10,7 @@ import os
 class EHTNetworkHelper:
     """Classe que facilitar a execução do eht-network do ns3"""
     def __init__(self,
-                 ns3_path=r"/home/william/ns-3/ns-allinone-3.43/ns-3.43",
+                 ns3_path=r"/home/lance/william/ns3/ns-allinone-3.43/ns-3.43",
                  script_name="wifi-eht-network",
                  enable_op_params=False
                  ):
@@ -215,6 +215,7 @@ class EHTNetworkHelper:
 
     def runner_sh_scripts(self, sh_names=[], file_name='teste'):
         file_text = ""
+        file_text += f"#!/bin/bash\n"
         for file_sh_name in sh_names:
             file_text += f"chmod +x {file_sh_name} & wait\n"
             file_text += f"./{file_sh_name} & wait\n"
