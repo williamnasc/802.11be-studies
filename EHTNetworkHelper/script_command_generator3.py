@@ -30,8 +30,8 @@ helper = EHTNetworkHelper(
 )
 
 helper.nStations = 1
-helper.mcs=11
-helper.simulationTime=1
+# helper.mcs=11
+# helper.simulationTime=1
 
 
 params_matrix = [
@@ -74,7 +74,7 @@ for i, params in enumerate(params_matrix):
     helper.frequency3 = freq3
     print(f"creating for: {freq}_{freq2}_{freq3}")
     sh_name = helper.generate_sh_script(
-        output_sim_path=r"/results_teste/Sim_"+str(i+10)+str(f"_{int(freq)}")+str(f"_{int(freq2)}")+str(f"_{int(freq3)}"),
+        output_sim_path=r"/results_teste/Sim_"+str(i+20)+str(f"_{int(freq)}")+str(f"_{int(freq2)}")+str(f"_{int(freq3)}"),
         sh_name=f"ns3_sim_{str(i+20)}_{int(freq)}_{int(freq2)}_{int(freq3)}",
         folder=pasta)
     sh_names.append(sh_name)
@@ -97,7 +97,7 @@ for i, params in enumerate(params_matrix):
     helper.frequency3 = freq3
     print(f"creating for: {freq}_{freq2}_{freq3}")
     sh_name = helper.generate_sh_script(
-        output_sim_path=r"/results_teste/Sim_"+str(i+10)+str(f"_{int(freq)}")+str(f"_{int(freq2)}")+str(f"_{int(freq3)}"),
+        output_sim_path=r"/results_teste/Sim_"+str(i+30)+str(f"_{int(freq)}")+str(f"_{int(freq2)}")+str(f"_{int(freq3)}"),
         sh_name=f"ns3_sim_{str(i+30)}_{int(freq)}_{int(freq2)}_{int(freq3)}",
         folder=pasta)
     sh_names.append(sh_name)
