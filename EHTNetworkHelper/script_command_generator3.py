@@ -50,8 +50,55 @@ for i, params in enumerate(params_matrix):
     helper.frequency3 = freq3
     print(f"creating for: {freq}_{freq2}_{freq3}")
     sh_name = helper.generate_sh_script(
-        output_sim_path=r"/results_teste/Sim_"+str(i+10),
+        output_sim_path=r"/results_teste/Sim_"+str(i+10)+str(f"_{int(freq)}")+str(f"_{int(freq2)}")+str(f"_{int(freq3)}"),
         sh_name=f"ns3_sim_{str(i+10)}_{int(freq)}_{int(freq2)}_{int(freq3)}",
+        folder=pasta)
+    sh_names.append(sh_name)
+
+helper.runner_sh_scripts(sh_names=sh_names, file_name=pasta)
+
+
+params_matrix = [
+    (5, 0, 0),
+    (5, 2.4, 0),
+    (5, 6, 0),
+    (5, 2.4, 6),
+]
+sh_names = []
+pasta = "teste_5"
+os.mkdir(pasta)
+for i, params in enumerate(params_matrix):
+    freq, freq2, freq3 = params
+    helper.frequency = freq
+    helper.frequency2 = freq2
+    helper.frequency3 = freq3
+    print(f"creating for: {freq}_{freq2}_{freq3}")
+    sh_name = helper.generate_sh_script(
+        output_sim_path=r"/results_teste/Sim_"+str(i+10)+str(f"_{int(freq)}")+str(f"_{int(freq2)}")+str(f"_{int(freq3)}"),
+        sh_name=f"ns3_sim_{str(i+20)}_{int(freq)}_{int(freq2)}_{int(freq3)}",
+        folder=pasta)
+    sh_names.append(sh_name)
+
+helper.runner_sh_scripts(sh_names=sh_names, file_name=pasta)
+
+params_matrix = [
+    (6, 0, 0),
+    (6, 2.4, 0),
+    (6, 5, 0),
+    (6, 2.4, 5),
+]
+sh_names = []
+pasta = "teste_6"
+os.mkdir(pasta)
+for i, params in enumerate(params_matrix):
+    freq, freq2, freq3 = params
+    helper.frequency = freq
+    helper.frequency2 = freq2
+    helper.frequency3 = freq3
+    print(f"creating for: {freq}_{freq2}_{freq3}")
+    sh_name = helper.generate_sh_script(
+        output_sim_path=r"/results_teste/Sim_"+str(i+10)+str(f"_{int(freq)}")+str(f"_{int(freq2)}")+str(f"_{int(freq3)}"),
+        sh_name=f"ns3_sim_{str(i+30)}_{int(freq)}_{int(freq2)}_{int(freq3)}",
         folder=pasta)
     sh_names.append(sh_name)
 

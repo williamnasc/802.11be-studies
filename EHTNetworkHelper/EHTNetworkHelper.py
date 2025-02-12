@@ -189,7 +189,7 @@ class EHTNetworkHelper:
 
         pass
 
-    def generate_sh_script(self, time=(0,1,0), mem=3600, output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim", folder=""):
+    def generate_sh_script(self, time=(0,2,0), mem=3600, output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim", folder=""):
         if folder != "":
             folder = folder+"/"
         simulation_args = self.build_simulation_args()
