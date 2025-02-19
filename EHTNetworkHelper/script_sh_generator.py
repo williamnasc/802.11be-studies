@@ -7,6 +7,8 @@ helper = EHTNetworkHelper(
     script_name="wifi-eht-network",
 )
 
+list_num_stas = [1, 5, 10]
+
 helper.nStations = 1
 # helper.mcs=11
 # helper.simulationTime=1
@@ -15,7 +17,7 @@ params_dict = {
     "params_matrix": [],
     "sh_names": [],
     "pasta": "nome",
-    "list_num_stas": [1, 10, 20, 40, 60, 80]
+    "list_num_stas": list_num_stas
 }
 params_dict_list = []
 # #################################################################
@@ -31,7 +33,7 @@ params_dict = {
     "params_matrix": params_matrix,
     "sh_names": sh_names,
     "pasta": pasta,
-    "list_num_stas": [1, 10, 20, 40, 60, 80]
+    "list_num_stas": list_num_stas
 }
 params_dict_list.append(params_dict)
 # #################################################################
@@ -48,7 +50,7 @@ params_dict = {
     "params_matrix": params_matrix,
     "sh_names": sh_names,
     "pasta": pasta,
-    "list_num_stas": [1, 10, 20, 40, 60, 80]
+    "list_num_stas": list_num_stas
 }
 params_dict_list.append(params_dict)
 # #################################################################
@@ -65,7 +67,7 @@ params_dict = {
     "params_matrix": params_matrix,
     "sh_names": sh_names,
     "pasta": pasta,
-    "list_num_stas": [1, 10, 20, 40, 60, 80]
+    "list_num_stas": list_num_stas
 }
 params_dict_list.append(params_dict)
 # #################################################################
