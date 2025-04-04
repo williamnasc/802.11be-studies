@@ -48,9 +48,9 @@ class EHTNetworkHelper:
 
         # CUSTOM PARAMS
         self.enable_op_params = enable_op_params
-        self.cw = 80
-        self.gi = 800
-        self.emlsr = 0
+        self.cw = None
+        self.gi = None
+        self.emlsr = None
 
 
     def build_simulation_args(self):
@@ -124,13 +124,15 @@ class EHTNetworkHelper:
 
 
         if self.enable_op_params:
-            cw_text = f" --cw={self.cw}"
-            gi_text = f" --gi={self.gi}"
-            emlsr_text = f" --emlsr={self.emlsr}"
-
-            list_of_params.append(cw_text)
-            list_of_params.append(gi_text)
-            list_of_params.append(emlsr_text)
+            if not (self.emlsr is None):
+                emlsr_text = f" --emlsr={self.emlsr}"
+                list_of_params.append(emlsr_text)
+            if not (self.cw is None):
+                cw_text = f" --cw={self.cw}"
+                list_of_params.append(cw_text)
+            if not (self.gi is None):
+                gi_text = f" --gi={self.gi}"
+                list_of_params.append(gi_text)
 
         # MONTA O COMANDO DA SIMULACAO COM OS ARGUMENTOS
         simulation_args = f"'{self.script_name} "
@@ -213,6 +215,37 @@ class EHTNetworkHelper:
         print(f"{file_sh_name} criado")
         return file_sh_name
 
+    def generate_sh_script_npad(self, cluster='intel-128', time=(0,1,0), mem=3600, output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim", folder=""):
+        if folder != "":
+            folder = folder+"/"
+        simulation_args = self.build_simulation_args()
+
+        file_text = ""
+        file_text += f"#!/bin/bash\n"
+        file_text += f"#SBATCH --partition={cluster}  # partição para a qual o job é enviado\n"
+        file_text += f"#SBATCH --time={time[0]}-{time[1]}:{time[2]}    # Especifica o tempo máximo de execução do job, dado no padrão dias-horas:minutos\n"
+        file_text += f"#SBATCH --mail-user=williambithose@gmail.com\n"
+        file_text += f"#SBATCH --mail-type=ALL\n\n"
+        # file_text += f"#SBATCH --output=william_job_{sh_name}_%A_%a.out\n\n"
+
+        file_text += f"module load singularity\n\n"
+        file_text += f"NS3=/opt/npad/shared/containers/ns-3.43.sif\n\n"
+
+        file_text += f"mkdir -p {self.ns3_path}{output_sim_path}\n\n"
+        file_text += f"echo \"CRIOU A PASTA\"\n\n"
+        # file_text += f"cd \'{self.ns3_path}\'\n\n"
+        file_text += f"cd \'/home/wmcdnascimento/ns-allinone-3.43/ns-3.43/\'\n\n"
+        file_text += f"srun -N 1 -n 1 singularity exec $NS3 ./ns3 run {simulation_args} --cwd=\'{self.ns3_path}{output_sim_path}\' > {self.ns3_path}{output_sim_path}.out 2>&1\n\n"
+
+        file_sh_name = folder+sh_name+".sh"
+        # Criando e escrevendo no arquivo .sh
+        with open(file_sh_name, "w") as arquivo:
+            arquivo.write(file_text)
+        # Tornando o arquivo executável
+        os.chmod(file_sh_name, 0o755)
+        print(f"{file_sh_name} criado")
+        return file_sh_name
+
     def runner_sh_scripts(self, sh_names=[], file_name='teste'):
         file_text = ""
         file_text += f"#!/bin/bash\n"
@@ -232,9 +265,17 @@ class EHTNetworkHelper:
 
 if __name__=='__main__':
     print('olá mundo!')
-    helper = EHTNetworkHelper()
+    cluster_path = "/home/wmcdnascimento/ns-allinone-3.43/ns-3.43/"
+    helper = EHTNetworkHelper(
+        ns3_path=cluster_path,
+        script_name="william-eht-network",
+        enable_op_params=True,
+    )
     helper.frequency = 5
     helper.frequency2 = 2.4
     helper.frequency3 = 6
+    helper.gi = 800
+    helper.cw = 40
+    helper.emlsrLinks = "0,1,2"
     # helper.run()
-    helper.generate_sh_script(output_sim_path=r"/results_teste/Sim_0", sh_name="ns3_sim")
+    helper.generate_sh_script_npad(output_sim_path=r"singularity_job/Sim_1", sh_name="ns3_sim_teste")
