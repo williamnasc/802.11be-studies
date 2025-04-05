@@ -49,6 +49,8 @@ params_dict = {
 }
 params_dict_list.append(params_dict)
 
+count = 0
+
 # #################################################################
 for i, params_dict_sim in enumerate(params_dict_list):
     modos = ['str', 'emlsr']
@@ -91,14 +93,15 @@ for i, params_dict_sim in enumerate(params_dict_list):
                             helper.gi = gi
 
 
-                            print(f"creating for: {freq}_{freq2}_{freq3} | modo:{modo} | stas: {num_stas} |"
+                            print(f"creating sim {count} for: {freq}_{freq2}_{freq3} | modo:{modo} | stas: {num_stas} |"
                                   f"mcs: {mcs} | cw: {cw} | gi: {gi}")
                             sh_name = helper.generate_sh_script_npad(
-                                output_sim_path=r"/singularity_job/Sim_" + str(i + 1) + str(f"_{int(freq)}") + str(
+                                output_sim_path=r"/singularity_job/Sim_"+ str(count) + str(i + 1) + str(f"_{int(freq)}") + str(
                                     f"_{int(freq2)}") + str(f"_{int(freq3)}_{modo}_{num_stas}"),
-                                sh_name=f"sim_{str(i + 1)}_{int(freq)}_{int(freq2)}_{int(freq3)}_{modo}_{num_stas}",
+                                sh_name=f"sim_{str(count)}_{str(i + 1)}_{int(freq)}_{int(freq2)}_{int(freq3)}_{modo}_{num_stas}",
                                 folder=pasta)
                             sh_names.append(sh_name)
+                            count += 1
                             pass
                 pass
             helper.runner_sh_scripts(sh_names=sh_names, file_name=pasta)
