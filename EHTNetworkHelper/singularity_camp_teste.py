@@ -104,6 +104,6 @@ for i, params_dict_sim in enumerate(params_dict_list):
                             count += 1
                             pass
                 pass
-            helper.runner_sh_scripts(sh_names=sh_names, file_name=pasta)
+            helper.runner_sh_scripts_sbatch(sh_names=sh_names, file_name=pasta)
             pass
         pass

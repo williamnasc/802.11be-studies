@@ -253,6 +253,12 @@ class EHTNetworkHelper:
             file_text += f"chmod +x {file_sh_name} & wait\n"
             file_text += f"./{file_sh_name} & wait\n"
 
+    def runner_sh_scripts_sbatch(self, sh_names=[], file_name='teste'):
+        file_text = ""
+        file_text += f"#!/bin/bash\n"
+        for file_sh_name in sh_names:
+            file_text += f"sbatch {file_sh_name} \n"
+
         file_sh_name = file_name + ".sh"
         # Criando e escrevendo no arquivo .sh
         with open(file_sh_name, "w") as arquivo:
