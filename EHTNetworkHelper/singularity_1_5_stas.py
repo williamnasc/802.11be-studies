@@ -10,8 +10,9 @@ helper = EHTNetworkHelper(
     enable_op_params=True,
 )
 
-list_num_stas = [1, 5, 10, 20, 30, 40]
-list_mcs = [0, 6, 13]
+list_num_stas = [1, 2, 3, 4, 5, 6]
+# list_mcs = [0, 6, 13]
+list_mcs = [13]
 list_gi = [800]
 list_cw = [40]
 
@@ -33,11 +34,11 @@ params_dict_list = []
 params_matrix = [
     (2.4, 0, 0),
     (2.4, 6, 0),
-    (6, 5, 0),
+    # (6, 5, 0),
     (2.4, 6, 5),
 ]
 sh_names = []
-pasta = "teste_singularity"
+pasta = "singularity_1_5_stas"
 params_dict = {
     "params_matrix": params_matrix,
     "sh_names": sh_names,
@@ -95,7 +96,7 @@ for i, params_dict_sim in enumerate(params_dict_list):
                             print(f"creating sim {count} for: {freq}_{freq2}_{freq3} | modo:{modo} | stas: {num_stas} |"
                                   f"mcs: {mcs} | cw: {cw} | gi: {gi}")
                             sh_name = helper.generate_sh_script_npad(
-                                output_sim_path=r"/singularity_job/Sim_"+ str(count) + str(f"_{int(freq)}") + str(
+                                output_sim_path=r"/singularity_job_1_5_stas/Sim_"+ str(count) + str(f"_{int(freq)}") + str(
                                     f"_{int(freq2)}") + str(f"_{int(freq3)}_{modo}_{num_stas}"),
                                 sh_name=f"sim_{str(count)}_{int(freq)}_{int(freq2)}_{int(freq3)}_{modo}_{num_stas}",
                                 folder=pasta)
